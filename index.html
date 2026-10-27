@@ -173,13 +173,15 @@
         </div>
       </div>
 
-      <div id="playerContainer" class="aspect-video w-full bg-black overflow-hidden relative"></div>
+      <!-- Адаптивная высота: на телефонах 400px (кнопки и видео с панелью полностью влезают), на ПК — 16:9 -->
+      <div id="playerContainer" class="w-full h-[400px] sm:h-[450px] md:h-auto md:aspect-video bg-black overflow-hidden relative"></div>
     </div>
 
     <!-- ИНФОРМАЦИЯ О ФИЛЬМЕ -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
-      <div class="md:col-span-1">
-        <img id="detailPoster" src="" class="w-full rounded-2xl shadow-xl border border-zinc-200 dark:border-zinc-800 object-cover aspect-[2/3]">
+      <!-- На телефонах постер аккуратный по центру, на ПК занимает свою колонку -->
+      <div class="md:col-span-1 flex justify-center md:block">
+        <img id="detailPoster" src="" class="w-44 sm:w-52 md:w-full rounded-2xl shadow-xl border border-zinc-200 dark:border-zinc-800 object-cover aspect-[2/3]">
       </div>
       
       <div class="md:col-span-3 space-y-4">
@@ -341,7 +343,7 @@
   <script>
     // ВШИТЫЙ КЛЮЧ КИНОПОИСКА И КОД АДМИНА
     const EMBEDDED_KP_KEY = "2b88a957-2a8e-4599-a56d-7a27bb72784f";
-    const ADMIN_SECRET_CODE = "Miki1233@@";
+    const ADMIN_SECRET_CODE = "7777";
     const DEFAULT_BG = "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=2560&q=80";
 
     function initTheme() {
@@ -635,7 +637,6 @@
       loadPopular();
     }
 
-    // ПОЛУЧЕНИЕ ВШИТОГО ИЛИ СОХРАНЕННОГО КЛЮЧА
     function getApiKey() { 
       const customKey = localStorage.getItem('ty_i_kino_kp_key');
       return (customKey && customKey.trim()) ? customKey.trim() : EMBEDDED_KP_KEY; 
