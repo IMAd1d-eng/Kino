@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ты и Кино — Онлайн-кинотеатр</title>
+
+  <!-- Иконка на вкладке -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍿</text></svg>">
+
+  <!-- Превью для соцсетей -->
+  <meta property="og:title" content="Ты и Кино — Онлайн-кинотеатр">
+  <meta property="og:description" content="Смотри тысячи фильмов и сериалов онлайн бесплатно.">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    body { transition: background-color 0.2s ease, color 0.2s ease; }
+    header { transition: background-color 0.2s ease, border-color 0.2s ease; }
+
+    #siteGlobalBg {
+      background-size: cover;
+      background-position: center top;
+      background-repeat: no-repeat;
+    }
+  </style>
+</head>
+<body class="bg-zinc-100 text-zinc-900 dark:bg-zinc-950 dark:text-white min-h-screen selection:bg-red-600 selection:text-white relative">
+
+  <!-- ФОН -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div 
+      id="siteGlobalBg" 
+      class="absolute inset-0 bg-fixed transition-all duration-700 opacity-60 dark:opacity-55"
+      style="background-image: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=2560&q=80');"
+    ></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-zinc-950/30 via-zinc-950/60 to-zinc-950/95 dark:from-zinc-950/30 dark:via-zinc-950/70 dark:to-zinc-950"></div>
+  </div>
+
+  <!-- ШАПКА САЙТА -->
+  <header class="fixed top-0 left-0 right-0 z-40 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md px-4 sm:px-6 md:px-12 py-3.5 flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800/80 gap-3">
+    <div class="flex items-center gap-4 shrink-0">
+      <div onclick="showCatalogPage()" class="text-xl sm:text-2xl font-black text-red-600 tracking-wider cursor-pointer hover:scale-105 transition-transform duration-150">
+        ТЫ И КИНО
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2 sm:gap-3">
+      <!-- Поиск -->
+      <div class="relative w-36 sm:w-64">
+        <input 
+          id="searchInput" 
+          onkeydown="if(event.key==='Enter') searchMovie()" 
+          type="text" 
+          placeholder="Поиск фильма..." 
+          class="w-full bg-zinc-200/80 dark:bg-zinc-900/90 border border-zinc-300 dark:border-zinc-700 text-xs sm:text-sm rounded-full pl-3.5 pr-8 py-1.5 text-zinc-900 dark:text-white focus:outline-none focus:border-red-600 transition"
+        >
+        <button onclick="searchMovie()" class="absolute right-2.5 top-1.5 text-zinc-500 hover:text-red-600 text-sm">
+          🔍
+        </button>
+      </div>
+
+      <!-- Смена темы -->
+      <button 
+        onclick="toggleTheme()" 
+        id="themeToggleBtn"
+        class="bg-zinc-200 dark:bg-zinc-900 hover:bg-zinc-300 dark:hover:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 w-9 h-9 rounded-full flex items-center justify-center text-sm transition-transform active:scale-90 shrink-0 shadow-sm"
+        title="Сменить тему оформления"
+      >
+        🌙
+      </button>
+
+      <!-- Профиль / Админка -->
+      <div id="headerAuthArea" class="flex items-center gap-2 shrink-0"></div>
+    </div>
+  </header>
+
+  <!-- СТРАНИЦА 1: КАТАЛОГ -->
+  <div id="catalogView" class="relative z-10">
+    <!-- БАННЕР -->
+    <section class="pt-24 px-4 sm:px-6 md:px-12 mb-8">
+      <div id="heroBanner" class="relative rounded-3xl overflow-hidden min-h-[380px] bg-cover bg-center flex items-end p-6 sm:p-10 md:p-12 shadow-2xl border border-zinc-300 dark:border-zinc-800/80"
+           style="background-image: linear-gradient(to top, rgba(9,9,11,0.95) 15%, rgba(9,9,11,0.6) 65%, rgba(9,9,11,0.9) 100%), url('https://m.media-amazon.com/images/M/MV5BYzdjMDAxZGItMjI2My00ODA1LTlkNzItOWFjMDU5ZDJlYWY3XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg');">
+        <div class="max-w-2xl space-y-3 text-white">
+          <span class="bg-red-600/30 border border-red-500/50 text-red-400 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider backdrop-blur-sm">
+            Главный фильм недели
+          </span>
+          <h1 id="heroTitle" class="text-3xl md:text-5xl font-black drop-shadow-md">Интерстеллар</h1>
+          <p id="heroMeta" class="text-xs text-zinc-300 font-medium">Фантастика, Драма • 2014</p>
+          <p id="heroDesc" class="text-zinc-200 text-sm md:text-base line-clamp-3 leading-relaxed drop-shadow-sm">
+            Команда исследователей отправляется сквозь червоточину в поисках нового дома для человечества.
+          </p>
+          <div class="pt-2">
+            <button id="heroBtn" class="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-2.5 rounded-xl shadow-lg shadow-red-600/40 transition hover:scale-105 active:scale-95 flex items-center gap-2">
+              <span>▶</span> Перейти к фильму
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ЖАНРЫ -->
+    <section class="px-4 sm:px-6 md:px-12 mb-8">
+      <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar" id="genreContainer"></div>
+    </section>
+
+    <!-- КАТАЛОГ -->
+    <main class="px-4 sm:px-6 md:px-12 pb-24">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold" id="catalogTitle">Популярные фильмы</h2>
+        <span class="text-xs text-zinc-500 dark:text-zinc-400" id="movieCount"></span>
+      </div>
+
+      <div id="loader" class="text-center py-16 hidden">
+        <div class="inline-block animate-spin text-3xl mb-3">⏳</div>
+        <div class="text-sm text-zinc-500 dark:text-zinc-400">Ищем фильмы в базе...</div>
+      </div>
+
+      <div id="movieGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"></div>
+
+      <!-- КНОПКА ЕЩЕ ФИЛЬМОВ -->
+      <div id="loadMoreBox" class="text-center pt-12 pb-6 hidden">
+        <button 
+          onclick="loadMoreMovies()" 
+          id="loadMoreBtn"
+          class="bg-white/80 dark:bg-zinc-900/90 backdrop-blur-md hover:bg-red-600 hover:text-white dark:hover:bg-red-600 border border-zinc-300 dark:border-zinc-700 font-bold text-sm px-8 py-3.5 rounded-2xl shadow-xl transition hover:scale-105 active:scale-95 flex items-center gap-2 mx-auto"
+        >
+          <span>▾</span> Загрузить еще фильмы (+20)
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <!-- СТРАНИЦА 2: СТРАНИЦА ФИЛЬМА -->
+  <div id="movieView" class="hidden pt-24 px-4 sm:px-8 md:px-16 pb-24 max-w-6xl mx-auto relative z-10">
+    <div class="mb-6 relative z-50">
+      <button 
+        id="btnBackToCatalog"
+        type="button"
+        onclick="showCatalogPage()" 
+        class="cursor-pointer inline-flex items-center gap-2 bg-zinc-900/90 hover:bg-red-600 text-white px-5 py-2.5 rounded-xl border border-zinc-700 hover:border-red-600 transition shadow-xl font-bold text-sm hover:scale-105 active:scale-95"
+      >
+        <span>←</span> Назад к каталогу
+      </button>
+    </div>
+
+    <!-- ПЛЕЕР -->
+    <div class="bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 rounded-3xl overflow-hidden shadow-2xl mb-8">
+      <div class="p-4 border-b border-zinc-200 dark:border-zinc-800 flex flex-wrap items-center justify-between gap-3 bg-zinc-50/50 dark:bg-zinc-950/40">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-red-600 animate-pulse"></span>
+          <span class="text-xs text-zinc-600 dark:text-zinc-400 font-semibold uppercase tracking-wider">Плеер онлайн</span>
+        </div>
+        
+        <div class="flex items-center gap-2">
+          <button id="serverBtn1" onclick="switchServer(1)" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-red-600 text-white transition shadow-sm">
+            Плеер 1
+          </button>
+          <button id="serverBtn2" onclick="switchServer(2)" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-400 hover:text-white hover:bg-zinc-700 transition">
+            Плеер 2 (Резерв)
+          </button>
+          <button id="serverBtn3" onclick="switchServer(3)" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-400 hover:text-white hover:bg-zinc-700 transition">
+            Трейлер
+          </button>
+        </div>
+      </div>
+
+      <div id="playerContainer" class="aspect-video w-full bg-black overflow-hidden relative"></div>
+    </div>
+
+    <!-- ИНФОРМАЦИЯ О ФИЛЬМЕ -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+      <div class="md:col-span-1">
+        <img id="detailPoster" src="" class="w-full rounded-2xl shadow-xl border border-zinc-200 dark:border-zinc-800 object-cover aspect-[2/3]">
+      </div>
+      
+      <div class="md:col-span-3 space-y-4">
+        <h1 id="detailTitle" class="text-3xl md:text-5xl font-black"></h1>
+        
+        <div class="flex flex-wrap items-center gap-4 text-sm">
+          <span id="detailRating" class="bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-400 border border-green-300 dark:border-green-800/60 font-bold px-2.5 py-0.5 rounded-md text-base"></span>
+          <span id="detailYear" class="text-zinc-600 dark:text-zinc-300 font-semibold"></span>
+          <span id="detailGenre" class="text-zinc-500 dark:text-zinc-400"></span>
+        </div>
+
+        <div class="pt-4 border-t border-zinc-200 dark:border-zinc-800">
+          <h3 class="text-sm font-bold text-zinc-400 uppercase tracking-wider mb-2">Сюжет</h3>
+          <p id="detailDesc" class="text-zinc-700 dark:text-zinc-300 text-base leading-relaxed"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ОТЗЫВЫ -->
+    <section class="bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 md:p-8 shadow-xl">
+      <div class="flex items-center justify-between pb-6 border-b border-zinc-200 dark:border-zinc-800 mb-6">
+        <h3 class="text-xl md:text-2xl font-bold flex items-center gap-2">
+          <span>💬</span> Отзывы зрителей 
+          <span id="commentsCountBadge" class="text-sm bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-400 px-2.5 py-0.5 rounded-full font-normal">0</span>
+        </h3>
+      </div>
+
+      <div id="guestCommentPrompt" class="mb-8 bg-zinc-100/90 dark:bg-zinc-950/80 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 text-center space-y-3">
+        <div class="text-2xl">🔒</div>
+        <h4 class="font-bold text-base">Оставлять отзывы могут только зарегистрированные зрители</h4>
+        <p class="text-xs text-zinc-500 dark:text-zinc-400 max-w-md mx-auto">
+          Войдите или зарегистрируйтесь за 10 секунд, чтобы делиться впечатлениями.
+        </p>
+        <div class="pt-1 flex items-center justify-center gap-3">
+          <button onclick="openAuthModal('register')" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-lg shadow-red-600/30 transition hover:scale-105 active:scale-95">
+            Регистрация
+          </button>
+          <button onclick="openAuthModal('login')" class="bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-semibold text-xs px-5 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 transition">
+            Войти
+          </button>
+        </div>
+      </div>
+
+      <div id="userCommentForm" class="hidden space-y-3 mb-8 bg-zinc-100 dark:bg-zinc-950 p-4 sm:p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div id="formUserAvatar" class="w-8 h-8 rounded-full bg-red-600 text-white font-bold text-xs flex items-center justify-center shadow-md"></div>
+            <div>
+              <span class="text-xs text-zinc-500 dark:text-zinc-400 block">Вы пишете от имени:</span>
+              <div class="flex items-center gap-1.5">
+                <span id="formUserName" class="text-sm font-bold"></span>
+                <span id="formUserRoleBadge"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <textarea 
+          id="commentText" 
+          rows="3" 
+          placeholder="Напишите ваше честное впечатление о фильме..." 
+          class="w-full bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-xl p-4 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-red-600 transition"
+        ></textarea>
+        <button 
+          onclick="addComment()" 
+          class="bg-red-600 hover:bg-red-700 text-white font-bold text-sm px-6 py-2.5 rounded-xl shadow-lg shadow-red-600/30 transition hover:scale-105 active:scale-95"
+        >
+          Опубликовать отзыв
+        </button>
+      </div>
+
+      <div id="commentsList" class="space-y-4"></div>
+    </section>
+  </div>
+
+  <!-- АДМИН-ПАНЕЛЬ -->
+  <div id="adminModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="relative w-full max-w-lg bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+      <div class="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-zinc-800">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">👑</span>
+          <h3 class="font-black text-lg">Панель Администратора</h3>
+        </div>
+        <button onclick="closeAdminModal()" class="text-zinc-400 hover:text-red-500 text-2xl font-light leading-none">&times;</button>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div class="bg-zinc-100 dark:bg-zinc-950 p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 text-center">
+          <span class="text-xs text-zinc-500 dark:text-zinc-400 block mb-1">Пользователей</span>
+          <span id="adminStatUsers" class="text-2xl font-black">0</span>
+        </div>
+        <div class="bg-zinc-100 dark:bg-zinc-950 p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 text-center">
+          <span class="text-xs text-zinc-500 dark:text-zinc-400 block mb-1">Ваша роль</span>
+          <span class="text-xs font-bold text-amber-500 bg-amber-500/10 border border-amber-500/30 px-2 py-1 rounded-md inline-block mt-1">Главный Админ</span>
+        </div>
+      </div>
+
+      <div class="bg-zinc-100 dark:bg-zinc-950 p-4 sm:p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 space-y-3">
+        <div class="flex items-center justify-between">
+          <h4 class="text-xs font-bold text-zinc-600 dark:text-zinc-300 uppercase tracking-wider">Ключ Кинопоиск API</h4>
+          <span class="text-[10px] text-zinc-500">Вшит по умолчанию</span>
+        </div>
+        <input id="adminKeyInput" type="text" class="w-full bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-zinc-900 dark:text-white focus:outline-none focus:border-red-600">
+        <button onclick="saveAdminApiKey()" class="w-full bg-zinc-900 text-white dark:bg-zinc-800 hover:bg-red-600 dark:hover:bg-red-600 border border-transparent font-bold text-xs py-2.5 rounded-xl transition">
+          Сохранить новый ключ
+        </button>
+      </div>
+
+      <div class="space-y-2">
+        <h4 class="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Зарегистрированные зрители:</h4>
+        <div id="adminUserList" class="max-h-36 overflow-y-auto space-y-1.5 no-scrollbar bg-zinc-100 dark:bg-zinc-950 p-3 rounded-2xl border border-zinc-200 dark:border-zinc-800 text-xs"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ОКНО АВТОРИЗАЦИИ -->
+  <div id="authModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="relative w-full max-w-md bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 rounded-3xl p-6 sm:p-7 shadow-2xl">
+      <button onclick="closeAuthModal()" class="absolute top-5 right-5 text-zinc-400 hover:text-red-500 text-2xl font-light leading-none">&times;</button>
+
+      <div class="flex bg-zinc-100 dark:bg-zinc-950 p-1 rounded-xl border border-zinc-200 dark:border-zinc-800 mb-6 mr-6">
+        <button id="tabRegisterBtn" onclick="switchAuthTab('register')" class="flex-1 py-2 text-xs font-bold rounded-lg bg-red-600 text-white transition shadow-sm">
+          Регистрация
+        </button>
+        <button id="tabLoginBtn" onclick="switchAuthTab('login')" class="flex-1 py-2 text-xs font-bold rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-red-600 transition">
+          Вход
+        </button>
+      </div>
+
+      <div id="authError" class="hidden mb-4 bg-red-100 dark:bg-red-950/60 border border-red-300 dark:border-red-800 text-red-600 dark:text-red-300 text-xs px-3.5 py-2.5 rounded-xl"></div>
+
+      <div class="space-y-3.5">
+        <div id="nameFieldWrap">
+          <label class="block text-xs text-zinc-500 dark:text-zinc-400 mb-1">Ваше имя или никнейм *</label>
+          <input id="authName" type="text" placeholder="Например: Хан" class="w-full bg-zinc-100 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 rounded-xl px-3.5 py-2.5 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-red-600">
+        </div>
+
+        <div>
+          <label class="block text-xs text-zinc-500 dark:text-zinc-400 mb-1">Логин *</label>
+          <input id="authLogin" type="text" placeholder="Логин для входа" class="w-full bg-zinc-100 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 rounded-xl px-3.5 py-2.5 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-red-600">
+        </div>
+
+        <div>
+          <label class="block text-xs text-zinc-500 dark:text-zinc-400 mb-1">Пароль *</label>
+          <input id="authPassword" onkeydown="if(event.key==='Enter') submitAuth()" type="password" placeholder="Минимум 4 символа" class="w-full bg-zinc-100 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 rounded-xl px-3.5 py-2.5 text-sm text-zinc-900 dark:text-white focus:outline-none focus:border-red-600">
+        </div>
+
+        <div id="adminPinWrap" class="pt-1">
+          <label class="block text-[11px] text-zinc-500 mb-1">Секретный код создателя (только для Админа):</label>
+          <input id="authAdminCode" type="password" placeholder="Оставьте пустым, если вы зритель" class="w-full bg-zinc-100 dark:bg-zinc-950/50 border border-zinc-300 dark:border-zinc-800 rounded-xl px-3.5 py-2 text-xs text-zinc-700 dark:text-zinc-300 focus:outline-none focus:border-amber-500">
+        </div>
+
+        <button id="authSubmitBtn" onclick="submitAuth()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl text-sm shadow-lg shadow-red-600/30 transition hover:scale-[1.02] active:scale-95 mt-2">
+          Создать аккаунт
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ВШИТЫЙ КЛЮЧ КИНОПОИСКА И КОД АДМИНА
+    const EMBEDDED_KP_KEY = "2b88a957-2a8e-4599-a56d-7a27bb72784f";
+    const ADMIN_SECRET_CODE = "7777";
+    const DEFAULT_BG = "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=2560&q=80";
+
+    function initTheme() {
+      const savedTheme = localStorage.getItem('ty_kino_theme') || 'dark';
+      applyTheme(savedTheme);
+    }
+
+    function applyTheme(theme) {
+      const html = document.documentElement;
+      const btn = document.getElementById('themeToggleBtn');
+      if (theme === 'dark') {
+        html.classList.add('dark');
+        btn.innerHTML = '🌙';
+        btn.setAttribute('title', 'Включить светлую тему');
+      } else {
+        html.classList.remove('dark');
+        btn.innerHTML = '☀️';
+        btn.setAttribute('title', 'Включить темную тему');
+      }
+      localStorage.setItem('ty_kino_theme', theme);
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.contains('dark');
+      applyTheme(isDark ? 'light' : 'dark');
+    }
+
+    const GENRES = [
+      { id: 0, name: "Все" },
+      { id: 6, name: "Фантастика" },
+      { id: 11, name: "Боевик" },
+      { id: 13, name: "Комедия" },
+      { id: 1, name: "Триллер" },
+      { id: 2, name: "Драма" },
+      { id: 7, name: "Приключения" }
+    ];
+
+    const STARTER_MOVIES = [
+      { 
+        id: 255380, 
+        title: "Интерстеллар", 
+        year: "2014", 
+        rating: "8.6", 
+        genre: "Фантастика, Драма", 
+        poster: "https://m.media-amazon.com/images/M/MV5BYzdjMDAxZGItMjI2My00ODA1LTlkNzItOWFjMDU5ZDJlYWY3XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", 
+        desc: "Команда ученых отправляется сквозь червоточину в поисках нового дома для человечества." 
+      },
+      { 
+        id: 41519, 
+        title: "Брат", 
+        year: "1997", 
+        rating: "8.3", 
+        genre: "Боевик, Драма", 
+        poster: "https://m.media-amazon.com/images/M/MV5BMjA5OTg1NzQ1N15BMl5BanBnXkFtZTcwNTI1OTMyMQ@@._V1_FMjpg_UX1000_.jpg", 
+        desc: "Данила Багров приезжает в Санкт-Петербург к старшему брату." 
+      },
+      { 
+        id: 476, 
+        title: "Назад в будущее", 
+        year: "1985", 
+        rating: "8.6", 
+        genre: "Фантастика, Комедия", 
+        poster: "https://m.media-amazon.com/images/M/MV5BNTI4YmI1MmUtODFiYi00Y2E4LWE3YjMtMjZiZGIwMzRhZDM0XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", 
+        desc: "Марти Макфлай на машине времени Дока Брауна перемещается в 1955 год." 
+      },
+      { 
+        id: 447301, 
+        title: "Невероятный Халк", 
+        year: "2008", 
+        rating: "6.9", 
+        genre: "Боевик, Фантастика", 
+        poster: "https://m.media-amazon.com/images/M/MV5BMTUyNzk3MjA1OF5BMl5BanBnXkFtZTcwMTE1Njg2MQ@@._V1_FMjpg_UX1000_.jpg", 
+        desc: "Брюс Бэннер ищет лекарство от своего превращения в зеленого великана." 
+      }
+    ];
+
+    let currentGenreId = 0;
+    let loadedMovies = [];
+    let currentMovie = null;
+    let currentPage = 1;
+    let authMode = 'register';
+    let isSearching = false;
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, s => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[s]));
+    }
+
+    function getUsers() {
+      const data = localStorage.getItem('ty_kino_users');
+      if (data) return JSON.parse(data);
+
+      const defaultUsers = [
+        { id: 1, name: "Администратор", login: "admin", password: "admin", role: "admin" }
+      ];
+      localStorage.setItem('ty_kino_users', JSON.stringify(defaultUsers));
+      return defaultUsers;
+    }
+
+    function getCurrentUser() {
+      const data = localStorage.getItem('ty_kino_current_user');
+      return data ? JSON.parse(data) : null;
+    }
+
+    function updateAuthUI() {
+      const user = getCurrentUser();
+      const headerArea = document.getElementById('headerAuthArea');
+      const guestPrompt = document.getElementById('guestCommentPrompt');
+      const userForm = document.getElementById('userCommentForm');
+
+      if (user) {
+        const isAdmin = user.role === 'admin';
+        const initial = escapeHtml(user.name.charAt(0).toUpperCase());
+
+        headerArea.innerHTML = `
+          ${isAdmin ? `
+            <button onclick="openAdminModal()" class="bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 border border-amber-500/40 text-xs font-bold px-3 py-1.5 rounded-full transition flex items-center gap-1.5 shadow-sm hover:scale-105 active:scale-95">
+              <span>👑</span> <span class="hidden sm:inline">Админка</span>
+            </button>
+          ` : ''}
+
+          <div class="flex items-center gap-2 bg-zinc-200 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-800 pl-1.5 pr-3 py-1 rounded-full shadow-sm">
+            <div class="w-6 h-6 rounded-full ${isAdmin ? 'bg-amber-500 text-black' : 'bg-red-600 text-white'} text-xs font-black flex items-center justify-center">
+              ${initial}
+            </div>
+            <span class="text-xs font-semibold max-w-[90px] truncate hidden sm:inline">${escapeHtml(user.name)}</span>
+            <button onclick="logoutUser()" class="text-[11px] text-zinc-500 hover:text-red-500 ml-1 transition">
+              Выйти
+            </button>
+          </div>
+        `;
+
+        if (guestPrompt && userForm) {
+          guestPrompt.classList.add('hidden');
+          userForm.classList.remove('hidden');
+          document.getElementById('formUserAvatar').textContent = initial;
+          document.getElementById('formUserAvatar').className = `w-8 h-8 rounded-full ${isAdmin ? 'bg-amber-500 text-black' : 'bg-red-600 text-white'} font-black text-xs flex items-center justify-center shadow-md`;
+          document.getElementById('formUserName').textContent = user.name;
+          document.getElementById('formUserRoleBadge').innerHTML = isAdmin 
+            ? '<span class="text-[10px] bg-amber-500/10 text-amber-500 border border-amber-500/30 px-2 py-0.5 rounded-full font-bold">👑 Админ</span>'
+            : '<span class="text-[10px] bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-2 py-0.5 rounded-full">Зритель</span>';
+        }
+      } else {
+        headerArea.innerHTML = `
+          <button onclick="openAuthModal('register')" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-3.5 py-2 rounded-full shadow-lg shadow-red-600/30 transition hover:scale-105 active:scale-95">
+            Войти / Регистрация
+          </button>
+        `;
+
+        if (guestPrompt && userForm) {
+          guestPrompt.classList.remove('hidden');
+          userForm.classList.add('hidden');
+        }
+      }
+
+      if (currentMovie) renderComments();
+    }
+
+    function openAuthModal(mode = 'register') {
+      document.getElementById('authError').classList.add('hidden');
+      document.getElementById('authName').value = '';
+      document.getElementById('authLogin').value = '';
+      document.getElementById('authPassword').value = '';
+      document.getElementById('authAdminCode').value = '';
+      switchAuthTab(mode);
+      document.getElementById('authModal').classList.remove('hidden');
+    }
+
+    function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
+
+    function switchAuthTab(mode) {
+      authMode = mode;
+      document.getElementById('authError').classList.add('hidden');
+      const tabReg = document.getElementById('tabRegisterBtn');
+      const tabLog = document.getElementById('tabLoginBtn');
+      const nameWrap = document.getElementById('nameFieldWrap');
+      const adminWrap = document.getElementById('adminPinWrap');
+      const submitBtn = document.getElementById('authSubmitBtn');
+
+      if (mode === 'register') {
+        tabReg.className = "flex-1 py-2 text-xs font-bold rounded-lg bg-red-600 text-white transition shadow-sm";
+        tabLog.className = "flex-1 py-2 text-xs font-bold rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-red-600 transition";
+        nameWrap.classList.remove('hidden');
+        adminWrap.classList.remove('hidden');
+        submitBtn.textContent = "Зарегистрироваться";
+      } else {
+        tabLog.className = "flex-1 py-2 text-xs font-bold rounded-lg bg-red-600 text-white transition shadow-sm";
+        tabReg.className = "flex-1 py-2 text-xs font-bold rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-red-600 transition";
+        nameWrap.classList.add('hidden');
+        adminWrap.classList.add('hidden');
+        submitBtn.textContent = "Войти в аккаунт";
+      }
+    }
+
+    function showAuthError(msg) {
+      const errBox = document.getElementById('authError');
+      errBox.textContent = msg;
+      errBox.classList.remove('hidden');
+    }
+
+    function submitAuth() {
+      const name = document.getElementById('authName').value.trim();
+      const login = document.getElementById('authLogin').value.trim().toLowerCase();
+      const password = document.getElementById('authPassword').value;
+      const adminCode = document.getElementById('authAdminCode').value.trim();
+
+      if (!login || !password) {
+        showAuthError('Заполните логин и пароль.');
+        return;
+      }
+      if (password.length < 4) {
+        showAuthError('Пароль минимум 4 символа.');
+        return;
+      }
+
+      const users = getUsers();
+
+      if (authMode === 'register') {
+        if (!name) {
+          showAuthError('Укажите ваше имя.');
+          return;
+        }
+        if (users.some(u => u.login === login)) {
+          showAuthError('Такой логин уже занят.');
+          return;
+        }
+
+        const role = (adminCode === ADMIN_SECRET_CODE || login === 'admin') ? 'admin' : 'viewer';
+
+        const newUser = { id: Date.now(), name, login, password, role };
+        users.push(newUser);
+        localStorage.setItem('ty_kino_users', JSON.stringify(users));
+        localStorage.setItem('ty_kino_current_user', JSON.stringify({ id: newUser.id, name: newUser.name, login: newUser.login, role: newUser.role }));
+        
+        closeAuthModal();
+        updateAuthUI();
+      } else {
+        const found = users.find(u => u.login === login && u.password === password);
+        if (!found) {
+          showAuthError('Неверный логин или пароль.');
+          return;
+        }
+
+        localStorage.setItem('ty_kino_current_user', JSON.stringify({ id: found.id, name: found.name, login: found.login, role: found.role }));
+        closeAuthModal();
+        updateAuthUI();
+      }
+    }
+
+    function logoutUser() {
+      localStorage.removeItem('ty_kino_current_user');
+      updateAuthUI();
+    }
+
+    function openAdminModal() {
+      const user = getCurrentUser();
+      if (!user || user.role !== 'admin') return;
+
+      const users = getUsers();
+      document.getElementById('adminStatUsers').textContent = users.length;
+      document.getElementById('adminKeyInput').value = getApiKey();
+
+      const listEl = document.getElementById('adminUserList');
+      listEl.innerHTML = users.map(u => `
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm">
+          <div>
+            <span class="font-bold">${escapeHtml(u.name)}</span>
+            <span class="text-zinc-500">(@${escapeHtml(u.login)})</span>
+          </div>
+          <span class="text-[10px] ${u.role === 'admin' ? 'text-amber-500 font-bold' : 'text-zinc-400'}">
+            ${u.role === 'admin' ? '👑 Админ' : 'Зритель'}
+          </span>
+        </div>
+      `).join('');
+
+      document.getElementById('adminModal').classList.remove('hidden');
+    }
+
+    function closeAdminModal() { document.getElementById('adminModal').classList.add('hidden'); }
+
+    function saveAdminApiKey() {
+      const val = document.getElementById('adminKeyInput').value.trim();
+      if (val) {
+        localStorage.setItem('ty_i_kino_kp_key', val);
+      } else {
+        localStorage.removeItem('ty_i_kino_kp_key');
+      }
+      alert('Ключ обновлен!');
+      closeAdminModal();
+      loadPopular();
+    }
+
+    // ПОЛУЧЕНИЕ ВШИТОГО ИЛИ СОХРАНЕННОГО КЛЮЧА
+    function getApiKey() { 
+      const customKey = localStorage.getItem('ty_i_kino_kp_key');
+      return (customKey && customKey.trim()) ? customKey.trim() : EMBEDDED_KP_KEY; 
+    }
+
+    async function apiRequest(endpoint, params = {}) {
+      const key = getApiKey();
+      if (!key) return null;
+      const url = new URL(`https://kinopoiskapiunofficial.tech/api${endpoint}`);
+      Object.keys(params).forEach(k => url.searchParams.append(k, params[k]));
+      
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+      try {
+        const res = await fetch(url.toString(), {
+          headers: { 'X-API-KEY': key, 'Content-Type': 'application/json' },
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        if (!res.ok) throw new Error('Ошибка API: ' + res.status);
+        return res.json();
+      } catch(err) {
+        clearTimeout(timeoutId);
+        throw err;
+      }
+    }
+
+    function normalize(item) {
+      return {
+        id: item.kinopoiskId || item.filmId,
+        title: item.nameRu || item.nameOriginal || 'Фильм',
+        year: item.year || '',
+        rating: item.ratingKinopoisk || item.rating || '—',
+        genre: item.genres?.map(g => g.genre).join(', ') || 'Кино',
+        poster: item.posterUrlPreview || item.posterUrl,
+        backdrop: item.posterUrl || item.posterUrlPreview,
+        desc: item.description || item.shortDescription || 'Описание скоро появится.'
+      };
+    }
+
+    function renderGenres() {
+      document.getElementById('genreContainer').innerHTML = GENRES.map(g => `
+        <button onclick="selectGenre(${g.id})" 
+          class="px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-transform duration-150 active:scale-95 ${
+            currentGenreId === g.id 
+              ? 'bg-red-600 text-white shadow-lg shadow-red-600/30' 
+              : 'bg-white/80 dark:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-transparent backdrop-blur-sm'
+          }">
+          ${g.name}
+        </button>
+      `).join('');
+    }
+
+    function renderCards(list) {
+      const grid = document.getElementById('movieGrid');
+      document.getElementById('movieCount').textContent = `Показано: ${list.length}`;
+      if (!list || list.length === 0) {
+        grid.innerHTML = '<div class="col-span-full text-center py-20 text-zinc-500">Ничего не найдено</div>';
+        return;
+      }
+      grid.innerHTML = list.map(m => `
+        <div onclick="openMoviePage(${m.id})" class="group cursor-pointer flex flex-col">
+          <div class="relative aspect-[2/3] rounded-2xl overflow-hidden bg-zinc-200 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 transition-all duration-200 group-hover:scale-105 group-hover:border-red-600 group-hover:shadow-xl shadow-md">
+            <img src="${m.poster}" alt="${escapeHtml(m.title)}" class="w-full h-full object-cover" loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+              <div class="w-12 h-12 rounded-full bg-red-600 text-white flex items-center justify-center shadow-lg">
+                ▶
+              </div>
+            </div>
+            <span class="absolute top-2 right-2 bg-black/80 backdrop-blur text-xs font-bold text-green-400 px-2 py-0.5 rounded border border-green-500/20 shadow-sm">
+              ★ ${m.rating}
+            </span>
+          </div>
+          <h3 class="mt-2 font-bold text-sm truncate group-hover:text-red-600 transition-colors">${escapeHtml(m.title)}</h3>
+          <span class="text-xs text-zinc-500">${escapeHtml(m.genre)} • ${m.year}</span>
+        </div>
+      `).join('');
+    }
+
+    function updateHero(movie) {
+      if (!movie) return;
+      document.getElementById('heroTitle').textContent = movie.title;
+      document.getElementById('heroMeta').textContent = `${movie.genre} • ${movie.year} • Рейтинг: ★ ${movie.rating}`;
+      document.getElementById('heroDesc').textContent = movie.desc;
+      if (movie.poster) {
+        document.getElementById('heroBanner').style.backgroundImage = 
+          `linear-gradient(to top, rgba(9,9,11,0.95) 15%, rgba(9,9,11,0.6) 65%, rgba(9,9,11,0.9) 100%), url('${movie.poster}')`;
+      }
+      document.getElementById('heroBtn').onclick = () => openMoviePage(movie.id);
+    }
+
+    async function loadPopular() {
+      document.getElementById('catalogTitle').textContent = 'Популярные фильмы';
+      document.getElementById('searchInput').value = '';
+
+      const loader = document.getElementById('loader');
+      const loadMoreBox = document.getElementById('loadMoreBox');
+
+      currentPage = 1;
+      loader.classList.remove('hidden');
+      document.getElementById('movieGrid').innerHTML = '';
+
+      try {
+        const data = await apiRequest('/v2.2/films/collections', { type: 'TOP_POPULAR_ALL', page: currentPage });
+        const list = (data && (data.items || data.films)) ? (data.items || data.films).map(normalize) : [];
+        loadedMovies = list.length > 0 ? list : STARTER_MOVIES;
+        renderCards(loadedMovies);
+        updateHero(loadedMovies[0]);
+        loadMoreBox.classList.remove('hidden');
+      } catch (err) {
+        console.warn('API недоступно, загружаем стартовые фильмы:', err);
+        loadedMovies = STARTER_MOVIES;
+        renderCards(loadedMovies);
+        updateHero(loadedMovies[0]);
+        loadMoreBox.classList.add('hidden');
+      } finally {
+        loader.classList.add('hidden');
+      }
+    }
+
+    async function loadMoreMovies() {
+      const btn = document.getElementById('loadMoreBtn');
+      currentPage++;
+      btn.innerHTML = `<span>⏳</span> Загружаем...`;
+
+      try {
+        let data;
+        if (currentGenreId === 0) {
+          data = await apiRequest('/v2.2/films/collections', { type: 'TOP_POPULAR_ALL', page: currentPage });
+        } else {
+          data = await apiRequest('/v2.2/films', { genres: currentGenreId, order: 'NUM_VOTE', page: currentPage });
+        }
+        const newBatch = (data && (data.items || data.films)) ? (data.items || data.films).map(normalize) : [];
+        if (newBatch.length > 0) {
+          loadedMovies = [...loadedMovies, ...newBatch];
+          renderCards(loadedMovies);
+        } else {
+          btn.textContent = "Больше фильмов нет";
+          return;
+        }
+      } catch(e) {
+        console.error(e);
+      } finally {
+        btn.innerHTML = "<span>▾</span> Загрузить еще фильмы (+20)";
+      }
+    }
+
+    async function selectGenre(genreId) {
+      currentGenreId = genreId;
+      currentPage = 1;
+      renderGenres();
+      if (genreId === 0) { loadPopular(); return; }
+
+      const genreObj = GENRES.find(g => g.id === genreId);
+      if (genreObj) {
+        document.getElementById('catalogTitle').textContent = genreObj.name;
+      }
+
+      document.getElementById('loader').classList.remove('hidden');
+      document.getElementById('movieGrid').innerHTML = '';
+      try {
+        const data = await apiRequest('/v2.2/films', { genres: genreId, order: 'NUM_VOTE', page: 1 });
+        const items = (data && (data.items || data.films)) ? (data.items || data.films).map(normalize) : [];
+        loadedMovies = items;
+        renderCards(loadedMovies);
+        document.getElementById('loadMoreBox').classList.remove('hidden');
+      } catch (e) {
+        // Локальная фильтрация в случае ошибки сети
+        const filtered = STARTER_MOVIES.filter(m => m.genre.toLowerCase().includes(genreObj ? genreObj.name.toLowerCase() : ''));
+        renderCards(filtered);
+        document.getElementById('loadMoreBox').classList.add('hidden');
+      } finally {
+        document.getElementById('loader').classList.add('hidden');
+      }
+    }
+
+    async function searchMovie() {
+      if (isSearching) return;
+      const q = document.getElementById('searchInput').value.trim();
+      if (!q) return;
+
+      isSearching = true;
+      showCatalogPage();
+
+      const loader = document.getElementById('loader');
+      const loadMoreBox = document.getElementById('loadMoreBox');
+
+      document.getElementById('catalogTitle').textContent = `Поиск: "${q}"`;
+      loader.classList.remove('hidden');
+      document.getElementById('movieGrid').innerHTML = '';
+      loadMoreBox.classList.add('hidden');
+
+      try {
+        const data = await apiRequest('/v2.1/films/search-by-keyword', { keyword: q, page: 1 })
+          .catch(() => apiRequest('/v2.2/films', { keyword: q, page: 1 }));
+
+        const rawList = data?.films || data?.items || [];
+        loadedMovies = rawList.map(normalize);
+        renderCards(loadedMovies);
+      } catch (e) {
+        const filtered = STARTER_MOVIES.filter(m => m.title.toLowerCase().includes(q.toLowerCase()));
+        renderCards(filtered);
+      } finally {
+        loader.classList.add('hidden');
+        isSearching = false;
+      }
+    }
+
+    function resetFilters() {
+      document.getElementById('searchInput').value = '';
+      currentGenreId = 0;
+      renderGenres();
+      showCatalogPage();
+      loadPopular();
+    }
+
+    function openMoviePage(id, pushState = true) {
+      currentMovie = loadedMovies.find(x => x.id === id) || STARTER_MOVIES.find(x => x.id === id);
+      if (!currentMovie) return;
+
+      document.getElementById('detailTitle').textContent = currentMovie.title;
+      document.getElementById('detailRating').textContent = '★ ' + currentMovie.rating;
+      document.getElementById('detailYear').textContent = currentMovie.year + ' год';
+      document.getElementById('detailGenre').textContent = currentMovie.genre;
+      document.getElementById('detailDesc').textContent = currentMovie.desc;
+      document.getElementById('detailPoster').src = currentMovie.poster;
+
+      try {
+        const globalBg = document.getElementById('siteGlobalBg');
+        if (currentMovie.backdrop || currentMovie.poster) {
+          globalBg.style.backgroundImage = `url('${currentMovie.backdrop || currentMovie.poster}')`;
+        }
+      } catch (e) {}
+
+      document.getElementById('catalogView').classList.add('hidden');
+      document.getElementById('movieView').classList.remove('hidden');
+      window.scrollTo(0, 0);
+
+      if (pushState) {
+        history.pushState({ page: 'movie', id: id }, '', '#movie-' + id);
+      }
+
+      switchServer(1);
+      updateAuthUI();
+      renderComments();
+    }
+
+    function showCatalogPage(pushState = true) {
+      try {
+        const pContainer = document.getElementById('playerContainer');
+        if (pContainer) pContainer.innerHTML = '';
+      } catch (e) {}
+
+      try {
+        document.getElementById('siteGlobalBg').style.backgroundImage = `url('${DEFAULT_BG}')`;
+      } catch (e) {}
+
+      const movieView = document.getElementById('movieView');
+      const catalogView = document.getElementById('catalogView');
+
+      if (movieView) movieView.classList.add('hidden');
+      if (catalogView) catalogView.classList.remove('hidden');
+
+      window.scrollTo(0, 0);
+
+      if (pushState && window.location.hash.includes('movie')) {
+        history.pushState({ page: 'catalog' }, '', window.location.pathname);
+      }
+    }
+
+    async function checkUrlHash() {
+      const hash = window.location.hash;
+      if (!hash.startsWith('#movie-')) return;
+
+      const movieId = parseInt(hash.replace('#movie-', ''), 10);
+      if (!movieId) return;
+
+      let movie = loadedMovies.find(m => m.id === movieId) || STARTER_MOVIES.find(m => m.id === movieId);
+
+      if (!movie) {
+        try {
+          const data = await apiRequest(`/v2.2/films/${movieId}`);
+          if (data) {
+            movie = normalize(data);
+          }
+        } catch (e) {
+          console.error('Ошибка загрузки фильма по ссылке:', e);
+        }
+      }
+
+      if (movie) {
+        if (!loadedMovies.some(m => m.id === movie.id)) {
+          loadedMovies.push(movie);
+        }
+        openMoviePage(movieId, false);
+      }
+    }
+
+    window.onpopstate = function(event) {
+      if (event.state && event.state.page === 'movie') {
+        openMoviePage(event.state.id, false);
+      } else {
+        showCatalogPage(false);
+      }
+    };
+
+    window.addEventListener('hashchange', () => {
+      if (window.location.hash.startsWith('#movie-')) {
+        checkUrlHash();
+      } else if (!window.location.hash) {
+        showCatalogPage(false);
+      }
+    });
+
+    function switchServer(serverNum) {
+      if (!currentMovie) return;
+      const pContainer = document.getElementById('playerContainer');
+      const kpId = currentMovie.id;
+
+      [1, 2, 3].forEach(num => {
+        const btn = document.getElementById('serverBtn' + num);
+        if (num === serverNum) {
+          btn.className = "text-xs font-bold px-3 py-1.5 rounded-lg bg-red-600 text-white shadow-md shadow-red-600/30 transition";
+        } else {
+          btn.className = "text-xs font-bold px-3 py-1.5 rounded-lg bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-400 hover:text-white hover:bg-zinc-700 transition";
+        }
+      });
+
+      let src = "https://kinodivbox.github.io/iframe?id=" + kpId;
+      if (serverNum === 2) {
+        src = "https://voidboost.tv/embed/" + kpId;
+      } else if (serverNum === 3) {
+        src = "https://www.youtube-nocookie.com/embed?listType=search&list=" + encodeURIComponent(currentMovie.title + " " + currentMovie.year + " трейлер") + "&autoplay=1";
+      }
+
+      pContainer.innerHTML = `
+        <iframe 
+          class="w-full h-full border-0 block" 
+          src="${src}" 
+          scrolling="no"
+          referrerpolicy="no-referrer"
+          allow="autoplay; encrypted-media; fullscreen" 
+          allowfullscreen
+        ></iframe>
+      `;
+    }
+
+    function getMovieComments(id) {
+      const stored = localStorage.getItem('ty_kino_comments_' + id);
+      return stored ? JSON.parse(stored) : [];
+    }
+
+    function renderComments() {
+      if (!currentMovie) return;
+      const comments = getMovieComments(currentMovie.id);
+      const listEl = document.getElementById('commentsList');
+      const currentUser = getCurrentUser();
+      const isAdmin = currentUser && currentUser.role === 'admin';
+
+      document.getElementById('commentsCountBadge').textContent = comments.length;
+
+      if (comments.length === 0) {
+        listEl.innerHTML = `
+          <div class="text-center py-8 text-zinc-500 text-sm">
+            Пока нет отзывов. Будьте первым, кто поделится мнением о фильме!
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = comments.map((c, idx) => {
+        const isOwner = currentUser && currentUser.login === c.userLogin;
+        const canDelete = isAdmin || isOwner;
+
+        return `
+          <div class="bg-zinc-100/95 dark:bg-zinc-950/80 border border-zinc-200 dark:border-zinc-800 p-4 rounded-2xl flex items-start gap-3 shadow-sm">
+            <div class="w-10 h-10 rounded-full ${c.role === 'admin' ? 'bg-amber-500 text-black' : 'bg-red-600/20 border border-red-500/40 text-red-500'} font-black flex items-center justify-center shrink-0">
+              ${escapeHtml(c.author.charAt(0).toUpperCase())}
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between gap-2 mb-1">
+                <div class="flex items-center gap-2">
+                  <span class="font-bold text-sm">${escapeHtml(c.author)}</span>
+                  ${c.role === 'admin' 
+                    ? '<span class="text-[10px] bg-amber-500/10 text-amber-500 border border-amber-500/30 px-2 py-0.5 rounded-full font-bold">👑 Админ</span>'
+                    : '<span class="text-[10px] bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-2 py-0.5 rounded-full">Зритель</span>'
+                  }
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="text-xs text-zinc-500">${escapeHtml(c.date)}</span>
+                  ${canDelete ? `<button onclick="deleteComment(${idx})" class="text-xs text-zinc-400 hover:text-red-500 transition" title="Удалить отзыв">🗑️</button>` : ''}
+                </div>
+              </div>
+              <p class="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed break-words">${escapeHtml(c.text)}</p>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function addComment() {
+      const user = getCurrentUser();
+      if (!user) {
+        openAuthModal('register');
+        return;
+      }
+      if (!currentMovie) return;
+
+      const textInput = document.getElementById('commentText');
+      const text = textInput.value.trim();
+
+      if (!text) {
+        alert('Пожалуйста, напишите текст отзыва!');
+        return;
+      }
+
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('ru-RU') + ' в ' + now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+
+      const comments = getMovieComments(currentMovie.id);
+      comments.unshift({
+        author: user.name,
+        userLogin: user.login,
+        role: user.role || 'viewer',
+        date: dateStr,
+        text: text
+      });
+
+      localStorage.setItem('ty_kino_comments_' + currentMovie.id, JSON.stringify(comments));
+      textInput.value = '';
+      renderComments();
+    }
+
+    function deleteComment(index) {
+      if (!currentMovie) return;
+      const comments = getMovieComments(currentMovie.id);
+      comments.splice(index, 1);
+      localStorage.setItem('ty_kino_comments_' + currentMovie.id, JSON.stringify(comments));
+      renderComments();
+    }
+
+    // СТАРТ ПРИЛОЖЕНИЯ
+    async function startApp() {
+      try {
+        initTheme();
+        updateAuthUI();
+        renderGenres();
+        await loadPopular();
+        await checkUrlHash();
+      } catch (err) {
+        console.error('Ошибка при запуске:', err);
+        renderCards(STARTER_MOVIES);
+        updateHero(STARTER_MOVIES[0]);
+      }
+    }
+
+    startApp();
+  </script>
+</body>
+</html>
