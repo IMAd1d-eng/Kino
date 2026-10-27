@@ -341,7 +341,7 @@
   <script>
     // ВШИТЫЙ КЛЮЧ КИНОПОИСКА И КОД АДМИНА
     const EMBEDDED_KP_KEY = "2b88a957-2a8e-4599-a56d-7a27bb72784f";
-    const ADMIN_SECRET_CODE = "7777";
+    const ADMIN_SECRET_CODE = "Miki1233@@";
     const DEFAULT_BG = "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=2560&q=80";
 
     function initTheme() {
@@ -804,7 +804,6 @@
         renderCards(loadedMovies);
         document.getElementById('loadMoreBox').classList.remove('hidden');
       } catch (e) {
-        // Локальная фильтрация в случае ошибки сети
         const filtered = STARTER_MOVIES.filter(m => m.genre.toLowerCase().includes(genreObj ? genreObj.name.toLowerCase() : ''));
         renderCards(filtered);
         document.getElementById('loadMoreBox').classList.add('hidden');
